@@ -1,0 +1,599 @@
+
+SQL> connect /as sysdba
+Connected.
+SQL> create table student(stu_id number(10)not null,stu_name varchar(20)not null,address varchar(30));
+
+Table created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(10)
+ STU_NAME                                  NOT NULL VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(30)
+
+SQL> insert into student values('11','aaaa','10 aaaaa');
+
+1 row created.
+
+SQL> insert into student values('&stu_id','&stu_name',address);
+Enter value for stu_id: 22
+Enter value for stu_name: bbbb
+old   1: insert into student values('&stu_id','&stu_name',address)
+new   1: insert into student values('22','bbbb',address)
+insert into student values('22','bbbb',address)
+                                       *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> insert into student values('&stu_id','&stu_name','address');
+Enter value for stu_id: 22
+Enter value for stu_name: bbbb
+old   1: insert into student values('&stu_id','&stu_name','address')
+new   1: insert into student values('22','bbbb','address')
+
+1 row created.
+
+SQL> insert into student values('&stu_id','&stu_name','&address');
+Enter value for stu_id: 33
+Enter value for stu_name: cccc
+Enter value for address: 12 cccc
+old   1: insert into student values('&stu_id','&stu_name','&address')
+new   1: insert into student values('33','cccc','12 cccc')
+
+1 row created.
+
+SQL> insert into student values('&stu_id,'&stu_name','&address');
+Enter value for stu_id: 44
+Enter value for stu_name: dddd
+Enter value for address: 14 dddd
+old   1: insert into student values('&stu_id,'&stu_name','&address')
+new   1: insert into student values('44,'dddd','14 dddd')
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> insert intostudent values('&stu_id','&stu_name','&address');
+Enter value for stu_id: 44
+Enter value for stu_name: dddd
+Enter value for address: 14 dddd
+old   1: insert intostudent values('&stu_id','&stu_name','&address')
+new   1: insert intostudent values('44','dddd','14 dddd')
+insert intostudent values('44','dddd','14 dddd')
+       *
+ERROR at line 1:
+ORA-00925: missing INTO keyword
+
+
+SQL> insert into student values('&stu_id','&stu_name','&address');
+Enter value for stu_id: 44
+Enter value for stu_name: dddd
+Enter value for address: 14 dddd
+old   1: insert into student values('&stu_id','&stu_name','&address')
+new   1: insert into student values('44','dddd','14 dddd')
+
+1 row created.
+
+SQL> select *from student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+        11 aaaa                 10 aaaaa
+        22 bbbb                 address
+        33 cccc                 12 cccc
+        44 dddd                 14 dddd
+
+SQL> alter table student add(dept varchar(25));
+
+Table altered.
+
+SQL> alter table student add(adm_date date);
+
+Table altered.
+
+SQL> desc student
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(10)
+ STU_NAME                                  NOT NULL VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(30)
+ DEPT                                               VARCHAR2(25)
+ ADM_DATE                                           DATE
+
+SQL> insert into student values('&stu_id','&stu_name','&address','&dept','&date');
+Enter value for stu_id: 55
+Enter value for stu_name: eeeee
+Enter value for address: 15 eeee
+Enter value for dept: cs
+Enter value for date: 3
+old   1: insert into student values('&stu_id','&stu_name','&address','&dept','&date')
+new   1: insert into student values('55','eeeee','15 eeee','cs','3')
+insert into student values('55','eeeee','15 eeee','cs','3')
+                                                       *
+ERROR at line 1:
+ORA-01840: input value not long enough for date format
+
+
+SQL>  insert into student values('&stu_id','&stu_name','&address','&dept','&date');
+Enter value for stu_id: 55
+Enter value for stu_name: eeee
+Enter value for address: 15 eeee
+Enter value for dept: cs
+Enter value for date: 14-nov-2022
+old   1:  insert into student values('&stu_id','&stu_name','&address','&dept','&date')
+new   1:  insert into student values('55','eeee','15 eeee','cs','14-nov-2022')
+
+1 row created.
+
+SQL> select *from student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        22 bbbb                 address
+
+
+        33 cccc                 12 cccc
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        44 dddd                 14 dddd
+
+
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+
+SQL> select stu_id from student;
+
+    STU_ID
+----------
+        11
+        22
+        33
+        44
+        55
+
+SQL> insert into student values('&stu_id','&stu_name','&address','&dept','&date');
+Enter value for stu_id: 66
+Enter value for stu_name: ffff
+Enter value for address: 16 ffff
+Enter value for dept: maths
+Enter value for date: 11-nov-2
+old   1: insert into student values('&stu_id','&stu_name','&address','&dept','&date')
+new   1: insert into student values('66','ffff','16 ffff','maths','11-nov-2')
+
+1 row created.
+
+SQL> insert into student values('&stu_id','&stu_name','&address','&dept','&date');
+Enter value for stu_id: 11
+Enter value for stu_name: aaaa
+Enter value for address: 11 aaaa
+Enter value for dept: cs
+Enter value for date: 11-nov-22
+old   1: insert into student values('&stu_id','&stu_name','&address','&dept','&date')
+new   1: insert into student values('11','aaaa','11 aaaa','cs','11-nov-22')
+
+1 row created.
+
+SQL> select distinct stu_id from student;
+
+    STU_ID
+----------
+        22
+        11
+        44
+        66
+        55
+        33
+
+6 rows selected.
+
+SQL> select*from student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        22 bbbb                 address
+
+
+        33 cccc                 12 cccc
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        44 dddd                 14 dddd
+
+
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+7 rows selected.
+
+SQL> select *from student where stu_id='11';
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+SQL> update student set stu_id='88'where stu_id='22';
+
+1 row updated.
+
+SQL> select* from student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        88 bbbb                 address
+
+
+        33 cccc                 12 cccc
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        44 dddd                 14 dddd
+
+
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+7 rows selected.
+
+SQL> delete from student where stu_name='cccc';
+
+1 row deleted.
+
+SQL> select * from student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        88 bbbb                 address
+
+
+        44 dddd                 14 dddd
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+6 rows selected.
+
+SQL> create table new_student as select*from student;
+
+Table created.
+
+SQL> desc new_student
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(10)
+ STU_NAME                                  NOT NULL VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(30)
+ DEPT                                               VARCHAR2(25)
+ ADM_DATE                                           DATE
+
+SQL> desc new_student
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(10)
+ STU_NAME                                  NOT NULL VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(30)
+ DEPT                                               VARCHAR2(25)
+ ADM_DATE                                           DATE
+
+SQL> insert into new_student select*from student;
+
+6 rows created.
+
+SQL> select*from new_student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        88 bbbb                 address
+
+
+        44 dddd                 14 dddd
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        88 bbbb                 address
+
+
+        44 dddd                 14 dddd
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+12 rows selected.
+
+SQL> select*from student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        88 bbbb                 address
+
+
+        44 dddd                 14 dddd
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+6 rows selected.
+
+SQL> create table new_student as select*from student;
+create table new_student as select*from student
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> create table neww_student as select*from student;
+
+Table created.
+
+SQL> select *from neww_student;
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        11 aaaa                 10 aaaaa
+
+
+        88 bbbb                 address
+
+
+        44 dddd                 14 dddd
+
+
+
+    STU_ID STU_NAME             ADDRESS
+---------- -------------------- ------------------------------
+DEPT                      ADM_DATE
+------------------------- ---------
+        55 eeee                 15 eeee
+cs                        14-NOV-22
+
+        66 ffff                 16 ffff
+maths                     11-NOV-02
+
+        11 aaaa                 11 aaaa
+cs                        11-NOV-22
+
+
+6 rows selected.
+
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
